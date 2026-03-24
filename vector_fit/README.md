@@ -1,10 +1,10 @@
 # vectorfit_sparam
 
-This script reads n-port S-parameter data (*.snp) and calculates 
-a wide band circuit model fit, using scikit-rf vector fit functionality.
-
+This script reads n-port S-parameter data (*.snp) and calculates a wide band circuit model fit, using scikit-rf vector fit functionality.  
 Vector fit is done for each branch of the n-port data, with model fit order determined automatically. As an option, the user can also specify the model fit order on the command line. If no value is
 specified, the required fit order will be determined automatically.
+
+NOTE THAT AUTOMATIC FIT ORDER MIGHT CREATE HIGH ORDER MODELS WHICH SLOW DOWN YOUR SPICE SIMULATION!
 
 <img src="./doc/vectorfit.png" alt="vectorfit" width="700">
 
@@ -16,9 +16,11 @@ https://scikit-rf.readthedocs.io/en/latest/tutorials/index.html
 
 # Usage
 To run the vector fit, specify the *.snp file as the first parameter.  If no value for model order is
-specified, the fit order will be determined automatically.
+specified, the fit order will be determined automatically.  
 
-example:
+NOTE THAT AUTOMATIC FIT ORDER MIGHT CREATE HIGH ORDER MODELS WHICH SLOW DOWN YOUR SPICE SIMULATION!
+
+Example run:
 ```
 (palace) C:\Users\volker\Downloads>D:\venv\palace\Scripts\python.exe d:\batch\vectorfit_sparam.py inductor3.s2p
 Vector fitting from SnP S-parameter file

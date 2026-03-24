@@ -2,13 +2,22 @@
 
 import os
 import skrf 
+from skrf.vectorFitting import  VectorFitting
 import argparse
 from matplotlib import pyplot as plt
 import numpy as np
+from packaging.version import parse
 
-print('Vector fitting from SnP S-parameter file')
+# check version of scikit-rf module, used for vectorfit options
+skrf_version = skrf.__version__
+new_skrf_version = parse(skrf_version) >= parse("1.11.0")
+
+
+print('____________________________________________________________________________')
+print(f'Vector fitting from SnP S-parameter file using scikit-rf {skrf_version}')
 print('Command line parameters: SnP_filename [numpoles]')
 print('If numpoles parameter is not specified, it will be determined automatically!\n')
+
 
 
 # evaluate commandline
@@ -27,13 +36,21 @@ nw = skrf.Network(args.snp)
 freq = nw.frequency
 f = freq.f
 
+
 # vector fitting
-vf = skrf.VectorFitting(nw)
+vf = VectorFitting(nw)
 if numpoles > 0:
-  vf.vector_fit(n_poles_real=numpoles, n_poles_cmplx=0)
+  if new_skrf_version:
+    vf.vector_fit(n_poles_real=numpoles, n_poles_cmplx=0, enforce_dc=False)
+  else:
+    vf.vector_fit(n_poles_real=numpoles, n_poles_cmplx=0)
   fitmode = 'defined by commandline parameter'
 else:  
-  vf.auto_fit()
+  if new_skrf_version:
+    vf.auto_fit() # enforce_dc=False was leading to strange results in test case, don't use here
+  else:
+    vf.auto_fit()
+
   fitmode = 'determined automatically'
 
 # check if input data is passive
