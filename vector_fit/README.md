@@ -4,8 +4,6 @@ This script reads n-port S-parameter data (*.snp) and calculates a wide band cir
 Vector fit is done for each branch of the n-port data, with model fit order determined automatically. As an option, the user can also specify the model fit order on the command line. If no value is
 specified, the required fit order will be determined automatically.
 
-NOTE THAT AUTOMATIC FIT ORDER MIGHT CREATE HIGH ORDER MODELS WHICH SLOW DOWN YOUR SPICE SIMULATION!
-
 <img src="./doc/vectorfit.png" alt="vectorfit" width="700">
 
 
@@ -18,7 +16,7 @@ https://scikit-rf.readthedocs.io/en/latest/tutorials/index.html
 To run the vector fit, specify the *.snp file as the first parameter.  If no value for model order is
 specified, the fit order will be determined automatically.  
 
-NOTE THAT AUTOMATIC FIT ORDER MIGHT CREATE HIGH ORDER MODELS WHICH SLOW DOWN YOUR SPICE SIMULATION!
+Note that such automatic order fit might create a more complex (higher order) model than a "good enough" low order manual fit.
 
 Example run:
 ```
