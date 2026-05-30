@@ -48,12 +48,16 @@ f = freq.f
 ftarget_index = rf.find_nearest_index(freq.f, f_target)
 omega = 2*np.pi*f[ftarget_index]
 
-z11=sub.z[0::,0,0]
-y11=sub.y[0::,0,0]
-Zline = np.sqrt(z11/y11)
+z11=sub.z[0::,0,0]          # z11, the open impedance
+y11=sub.y[0::,0,0]          # 1/y11, the short impedance
+Zline = np.sqrt(z11/y11)    # characteristic impedance of the line
 
-gamma0 = 1/length * np.arctanh(1/(Zline*y11))
-gamma_wideband =  gamma0.real + 1j*np.unwrap (gamma0.imag*length, period=np.pi/2)/length
+gamma0 = 1/length * np.arctanh(1/(Zline*y11))   # propagation constant
+
+# electrical phase  = β · length        = gamma0.imag * length   ✓
+# attenuation       = α                 = gamma0.real            (no wrap)
+# period=np.pi/2 instead of the default 2π reflects the branch period of arctanh
+gamma_wideband =  gamma0.real + 1j*np.unwrap(gamma0.imag*length, period=np.pi/2)/length
 
 
 gamma_ftarget = gamma_wideband[ftarget_index]
@@ -70,11 +74,11 @@ append_log('_________________________________________________')
 append_log('RLGC line parameters')
 append_log(f"Your input for physical line length: {length:.3e} m")
 append_log(f"Extraction frequency {f[ftarget_index]/1e9:.3f} GHz")
-append_log(f"R   [Ohm/m]: {R:.3e}") 
-append_log(f"L'  [H/m]  : {L:.3e}")  
-append_log(f"G   [S/m]  : {G:.3e}") 
-append_log(f"C'  [H/m]  : {C:.3e}")  
-append_log(f"Zline [Ohm]: {Zline_ftarget.real:.3f}")  
+append_log(f"R   [Ohm/m]: {R:.3e}")
+append_log(f"L'  [H/m]  : {L:.3e}")
+append_log(f"G   [S/m]  : {G:.3e}")
+append_log(f"C'  [H/m]  : {C:.3e}")
+append_log(f"Zline [Ohm]: {Zline_ftarget.real:.3f}")
 append_log('')
 
 log_text = "".join(log)
